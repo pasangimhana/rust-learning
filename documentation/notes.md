@@ -311,65 +311,21 @@ Here, `Rc::new(5)` creates a new Rc that points to the value 5. `Rc::clone(&a)` 
 
 - `Rc::upgrade()` - Converts a weak reference to a strong reference.
 
+## RefCell\<T>
 
-## Cell<T> and RefCell<T>
+`RefCell<T>` is used to mutate a value inside an immutable reference.
 
-Cell<T> and RefCell<T> are used to mutate data inside an immutable reference. As we mentioned earlier, `Rc<T>` are immutable by default. This means that you can't mutate the value that a reference points to. But sometimes, you may want to mutate the value inside an immutable reference. This is where Cell<T> and RefCell<T> come in. 
-
-Let's try to mutate a value inside an immutable reference. Here, 
-
-```rust
-fn main() {
-    let number = 42;
-    let immutable_reference = &number;
-    *immutable_reference += 10;
-    println!("number: {}", number);
-}
-```
-This will give the following error.
-
-```
-`imm_ref` is a `&` reference, so the data it refers to cannot be written
-```
-
-But if we store the value in a Cell<T> or RefCell<T>, we can mutate the value inside an immutable reference.
+- `RefCell<T>' can be used inside an Rc<T> to mutate the value it points to. This way we can have multiple references to a value and still mutate it.
 
 ```rust
-use std::cell::Cell;
+fn main()
+{
+    let x = Rc::new(5));
 
-fn main() {
-    let number = Cell::new(42);
-    let immutable_reference = &number;
-    immutable_reference.set(immutable_reference.get() + 10);
-    println!("number: {}", my_number.get());
+    println!("x: {}", x.borrow());
 }
+
 ```
-
-This will print the following output.
-
-```console
-number: 52
-```
-
-- `Cell<T>` is used to mutate a value inside an immutable reference.
-
-- `Cell<T>` has two methods - `set` and `get` - to set and get the value inside the Cell.
-
-### Cell\<T> Methods
-
-- `Cell::new()` - Creates a new Cell that contains the value passed to it.
-
-- `Cell::set()` - Sets the value inside the Cell.
-
-- `Cell::get()` - Returns the value inside the Cell.
-
-- `Cell::replace()` - Replaces the value inside the Cell and returns the old value.
-
-But there are some limitations to `Cell<T>`. It can only be used with types that implement the `Copy` trait.
-
-- `RefCell<T>` is used to mutate a value inside an immutable reference. It can be used with types that don't implement the `Copy` trait.
-
-- `RefCell<T>` has two methods - `borrow` and `borrow_mut` - to get an immutable and mutable reference to the value inside the RefCell.
 
 ### Methods of RefCell\<T>
 
