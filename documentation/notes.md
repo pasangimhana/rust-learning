@@ -371,9 +371,13 @@ But there are some limitations to `Cell<T>`. It can only be used with types that
 
 - `RefCell<T>` has two methods - `borrow` and `borrow_mut` - to get an immutable and mutable reference to the value inside the RefCell.
 
-## Practical Example with a Doubly Linked List
+### Methods of RefCell\<T>
 
-Let's create a linked list using `Rc<T>` and `RefCell<T>`. We will create a `Node` struct that contains a value and a reference to the next node. We will use `Rc<T>` to create multiple references to the same node and `RefCell<T>` to mutate the value inside the node.
+- `RefCell::new()` - Creates a new RefCell that contains the value passed to it.
+
+- `RefCell::borrow()` - Returns an immutable reference to the value inside the RefCell.
+
+- `RefCell::borrow_mut()` - Returns a mutable reference to the value inside the RefCell.
 
 
 
