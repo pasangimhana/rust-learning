@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>notes.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h4 id="option-in-rust">Option in Rust</h4>
+<p>Option is a type that represents either Some value or None. It is used to handle the absence of a value. By using Option, you can avoid null pointer exceptions. Because Option is an enum, it can be used with match to handle the Some and None cases.</p>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-keyword">let</span> x: <span class="hljs-built_in">Option</span>&lt;<span class="hljs-built_in">i32</span>&gt; = <span class="hljs-literal">Some</span>(<span class="hljs-number">5</span>);
+    <span class="hljs-keyword">let</span> y: <span class="hljs-built_in">Option</span>&lt;<span class="hljs-built_in">i32</span>&gt; = <span class="hljs-literal">None</span>;
+
+    <span class="hljs-keyword">match</span> x {
+        <span class="hljs-literal">Some</span>(i) =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">"x: {}"</span>, i),
+        <span class="hljs-literal">None</span> =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">"x: None"</span>),
+    }
+
+    <span class="hljs-keyword">match</span> y {
+        <span class="hljs-literal">Some</span>(i) =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">"y: {}"</span>, i),
+        <span class="hljs-literal">None</span> =&gt; <span class="hljs-built_in">println!</span>(<span class="hljs-string">"y: None"</span>),
+    }
+}
+</div></code></pre>
+<h4 id="references">References</h4>
+<p>References are used to refer to a value without taking ownership of it. They are used to pass a value to a function without moving it. This is a concept called <em>borrowing</em>.</p>
+<blockquote>
+<p>Note : Reference &amp; in Rust is different from C/C++ reference &amp;. In Rust, &amp; is used to create a reference to a value and * is used to dereference the reference. In C/C++, &amp; is used to get the address of a variable and * is used to get the value at the address. In Rust, the address of a variable is not exposed to the programmer.</p>
+</blockquote>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-keyword">let</span> x = <span class="hljs-number">5</span>;
+    <span class="hljs-keyword">let</span> y = &amp;x;
+
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">"x: {}"</span>, x);
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">"y: {}"</span>, y);
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">"*y: {}"</span>, *y);
+}
+</div></code></pre>
+<p><code>&amp;x</code> is used to create a reference to the value of x.</p>
+<p><code>*y</code> is used to dereference the reference and get the value it points to.</p>
+<p>By default, references are immutable. To create a mutable reference, use <code>&amp;mut</code> instead of <code>&amp;</code>.</p>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> x = <span class="hljs-number">5</span>;
+    <span class="hljs-keyword">let</span> y = &amp;<span class="hljs-keyword">mut</span> x;
+
+    *y += <span class="hljs-number">1</span>;
+
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">"x: {}"</span>, x);
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">"y: {}"</span>, y);
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">"*y: {}"</span>, *y);
+}
+</div></code></pre>
+<p>But there are some limitations to references.</p>
+<ol>
+<li>References can only have EITHER one mutable reference OR any number of immutable references</li>
+</ol>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-keyword">let</span> <span class="hljs-keyword">mut</span> s = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">"hello"</span>);
+
+    <span class="hljs-keyword">let</span> r1 = &amp;<span class="hljs-keyword">mut</span> s;
+    <span class="hljs-keyword">let</span> r2 = &amp;<span class="hljs-keyword">mut</span> s;
+
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">"{}, {}"</span>, r1, r2);
+}
+</div></code></pre>
+<p>This will not work and give the error at r2 creation.</p>
+<pre class="hljs"><code><div>error[E0499]: cannot borrow `s` as mutable more than once at a time
+</div></code></pre>
+<ol start="2">
+<li>No references can outlive the data it points to.</li>
+</ol>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-keyword">let</span> r;
+    {
+        <span class="hljs-keyword">let</span> x = <span class="hljs-number">5</span>;
+        r = &amp;x;
+    }
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">"r: {}"</span>, r);
+}
+</div></code></pre>
+<p>This will not work and give the error at println!.</p>
+<pre class="hljs"><code><div>error[E0597]: `x` does not live long enough
+</div></code></pre>
+<ol start="3">
+<li>Dangling references are not allowed</li>
+</ol>
+<blockquote>
+<p>Dangling references are pointers that reference a location in memory that may have been given to someone else, by freeing some memory while preserving a pointer to that memory.</p>
+</blockquote>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-keyword">let</span> r = dangle();
+    }
+
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">dangle</span></span>() -&gt; &amp;<span class="hljs-built_in">String</span> {
+    <span class="hljs-keyword">let</span> s = <span class="hljs-built_in">String</span>::from(<span class="hljs-string">"hello"</span>);
+    &amp;s
+}
+</div></code></pre>
+<p>This will not work and give the error at return statement.</p>
+<pre class="hljs"><code><div>error[E0106]: missing lifetime specifier
+</div></code></pre>
+<blockquote>
+<p>Lifetimes are a complex topic and will be covered in a separate note. Simply put, lifetimes are a way to ensure that references are valid for a certain scope of time.</p>
+</blockquote>
+<h3 id="pointer-types-in-rust">Pointer types in Rust</h3>
+<ol>
+<li>Box<T></li>
+<li>Rc<T></li>
+<li>Arc<T></li>
+<li>Cell<T></li>
+<li>RefCell<T></li>
+</ol>
+<h4 id="boxt">Box<T></h4>
+<p>Box<T> is a smart pointer that allows you to store data on the heap rather than the stack. It is used when you have a piece of data whose size can't be known at compile time and you want to use it in a context that requires an exact size.</p>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-keyword">let</span> b = <span class="hljs-built_in">Box</span>::new(<span class="hljs-number">5</span>);
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">"b = {}"</span>, b);
+}
+</div></code></pre>
+<ol>
+<li>
+<p>Box<T> is a pointer to a heap-allocated value of type T.</p>
+</li>
+<li>
+<p>Box<T> is a smart pointer because it implements the Deref trait, which allows Box<T> values to be treated like references.</p>
+</li>
+</ol>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-keyword">let</span> x = <span class="hljs-number">5</span>;
+    <span class="hljs-keyword">let</span> y = &amp;x;
+    <span class="hljs-keyword">let</span> z = <span class="hljs-built_in">Box</span>::new(x);
+    <span class="hljs-keyword">if</span> *y == *z {
+        <span class="hljs-built_in">println!</span>(<span class="hljs-string">"y and z are equal"</span>);
+    }
+}
+</div></code></pre>
+<p>Here <code>*y</code> and <code>*z</code> are dereferenced and compared. This is possible because Box<T> implements Deref trait.</p>
+<ol start="3">
+<li>Box<T> is also a smart pointer because it implements the Drop trait, which allows you to customize the code that is run when a Box<T> goes out of scope.</li>
+</ol>
+<pre class="hljs"><code><div><span class="hljs-class"><span class="hljs-keyword">struct</span> <span class="hljs-title">CustomSmartPointer</span></span> {
+data: <span class="hljs-built_in">String</span>,
+}
+
+<span class="hljs-keyword">impl</span> <span class="hljs-built_in">Drop</span> <span class="hljs-keyword">for</span> CustomSmartPointer {
+    <span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">drop</span></span>(&amp;<span class="hljs-keyword">mut</span> <span class="hljs-keyword">self</span>) {
+        <span class="hljs-built_in">println!</span>(<span class="hljs-string">"Dropping CustomSmartPointer with data `{}`!"</span>, <span class="hljs-keyword">self</span>.data);
+    }
+}
+
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-keyword">let</span> c = CustomSmartPointer { data: <span class="hljs-built_in">String</span>::from(<span class="hljs-string">"my stuff"</span>) };
+    <span class="hljs-keyword">let</span> d = CustomSmartPointer { data: <span class="hljs-built_in">String</span>::from(<span class="hljs-string">"other stuff"</span>) };
+ 
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">"CustomSmartPointers created."</span>);
+}
+</div></code></pre>
+<blockquote>
+<p>Drop trait is used to implement the destructor for a type. The destructor is the code that is run when an instance of the type goes out of scope.</p>
+</blockquote>
+<h4 id="rct">Rc<T></h4>
+<p>Rc<T> is a reference counting smart pointer. It keeps track of the number of references to a value and when the count goes to zero, the value is dropped.</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">use</span> std::rc::Rc;
+
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-keyword">let</span> a = Rc::new(<span class="hljs-number">5</span>);
+    <span class="hljs-keyword">let</span> b = Rc::clone(&amp;a);
+    <span class="hljs-keyword">let</span> c = Rc::clone(&amp;a);
+
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">"a: {}, b: {}, c: {}"</span>, a, b, c);
+}
+</div></code></pre>
+<ol>
+<li>
+<p>Rc<T> is a pointer to a heap-allocated value of type T.</p>
+</li>
+<li>
+<p>Implements <code>Drop</code>, <code>Deref</code> and <code>Clone</code> traits.</p>
+</li>
+<li>
+<p>Rc<T> is used when you want to allocate a value on the heap and have multiple ownership of it.</p>
+</li>
+<li>
+<p>Rules of Rc<T> are similar to references. It can only have either one mutable reference or any number of immutable references.</p>
+</li>
+<li>
+<p>Rc<T> is not thread safe. If you want to use it in a multi-threaded environment, you should use <code>Arc&lt;T&gt;</code>.</p>
+</li>
+</ol>
+<h4 id="cellt-and-refcellt">Cell<T> and RefCell<T></h4>
+<p>Cell<T> and RefCell<T> are used to mutate data inside an immutable reference.</p>
+<p>Let's try to mutate a value inside an immutable reference. Here,</p>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-keyword">let</span> my_number = <span class="hljs-number">42</span>;
+    <span class="hljs-keyword">let</span> immutable_reference = <span class="hljs-keyword">mut</span>&amp; my_number;
+    *immutable_reference += <span class="hljs-number">10</span>;
+}
+</div></code></pre>
+<p>This will give the following error.</p>
+<pre class="hljs"><code><div>`immutable_reference` is a `&amp;` reference, so the data it refers to cannot be written
+</div></code></pre>
+<p>But if we store the value in a Cell<T> or RefCell<T>, we can mutate the value inside an immutable reference.</p>
+<pre class="hljs"><code><div><span class="hljs-keyword">use</span> std::cell::Cell;
+
+<span class="hljs-function"><span class="hljs-keyword">fn</span> <span class="hljs-title">main</span></span>() {
+    <span class="hljs-keyword">let</span> my_number = Cell::new(<span class="hljs-number">42</span>);
+    <span class="hljs-keyword">let</span> immutable_reference = &amp;my_number;
+    immutable_reference.set(immutable_reference.get() + <span class="hljs-number">10</span>);
+    <span class="hljs-built_in">println!</span>(<span class="hljs-string">"my_number: {}"</span>, my_number.get());
+}
+</div></code></pre>
+
+</body>
+</html>
