@@ -230,7 +230,7 @@ impl<T: std::fmt::Display> DoublyLinkedList<T> {
 
 In this article, we will implement a doubly linked list in Rust. We will use the `Rc` and `RefCell` types to create a doubly linked list that can be iterated over and modified.
 
-Common concepts that reoccurs in this implementation are:
+Common concepts that reoccur in this implementation are:
 
 - `Rc` - A reference-counted pointer for shared ownership.
 - `RefCell` - A mutable memory location with dynamically checked borrow rules.
@@ -446,9 +446,3 @@ Let's go through the process happening in the `pop_last` method by going through
 - `.into_inner().value.unwrap()` - We use the `into_inner` method of the `RefCell` type to extract the inner value of the `RefCell` and the `unwrap` method of the `Option` type to extract the value if it exists.
 
 To summarize the process happening in the `pop_last` method, we take the tail of the list and upgrade the weak reference to the previous tail to a strong reference. We then remove the last node from the list by updating the `next` and `prev` references of the previous tail and the last node. We then decrement the count of the list by `1` and return the value of the last node.
-
-
-
-
-
-
