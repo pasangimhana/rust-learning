@@ -1,18 +1,42 @@
-mod iter;
-mod node;
+use std::cell::RefCell;
+use std::rc::{Rc, Weak};
 
-use std::{
-    cell::RefCell,
-    rc::{Rc, Weak},
-};
+pub struct Node<T> {
+    pub value: Option<T>,
+    pub prev: Option<Rc<RefCell<Node<T>>>>,
+    pub next: Option<Rc<RefCell<Node<T>>>>,
+}
 
-use self::iter::Iter;
-use self::node::Node;
+impl<T> Node<T> {
+    pub fn new(value: T) -> Rc<RefCell<Self>> {
+        Rc::new(RefCell::new(Node {
+            value: Some(value),
+            prev: None,
+            next: None,
+        }))
+    }
+}
+
+pub struct Iter<T> {
+    pub current: Option<Rc<RefCell<Node<T>>>>,
+}
+
+impl<T: Clone> Iterator for Iter<T> {
+    type Item = Rc<RefCell<Node<T>>>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        self.current.take().map(|current| {
+            let next = current.borrow().next.clone();
+            self.current = next;
+            current
+        })
+    }
+}
 
 pub struct DoublyLinkedList<T> {
     count: u32,
     head: Option<Rc<RefCell<Node<T>>>>,
-    tail: Option<Weak<RefCell<Node<T>>>>,
+    tail: Option<Rc<RefCell<Node<T>>>>,
 }
 
 impl<T> DoublyLinkedList<T> {
@@ -32,45 +56,37 @@ impl<T> DoublyLinkedList<T> {
 }
 
 impl<T: std::fmt::Display> DoublyLinkedList<T> {
+
+    // append function with RefCell
     pub fn append(&mut self, value: T) {
         let new_node = Node::new(value);
 
         match self.tail.take() {
-            Some(old_tail_weak) => {
-                if let Some(old_tail) = old_tail_weak.upgrade() {
-                    old_tail.borrow_mut().next = Some(Rc::clone(&new_node));
-                    new_node.borrow_mut().prev = Some(old_tail_weak);
-                }
+            Some(old_tail) => {
+                old_tail.borrow_mut().next = Some(Rc::clone(&new_node));
+                new_node.borrow_mut().prev = Some(old_tail);
             }
             None => {
                 self.head = Some(Rc::clone(&new_node));
             }
         }
-        self.tail = Some(Rc::downgrade(&new_node));
+
+        self.tail = Some(new_node);
         self.count += 1;
     }
 
+// pop_last function with RefCell
     pub fn pop_last(&mut self) -> Option<T> {
-        self.tail.take().and_then(|old_tail_weak| {
-            old_tail_weak.upgrade().map(|old_tail| {
-                if let Some(prev_node_weak) = old_tail.borrow_mut().prev.take() {
-                    if let Some(prev_node) = prev_node_weak.upgrade() {
-                        prev_node.borrow_mut().next = None;
-                        self.tail = Some(prev_node_weak);
-                        self.count -= 1;
-                    }
-                } else {
-                    self.head = None;
-                    self.count = 0;
-                }
+        self.tail.take().map(|old_tail| {
+            if let Some(new_tail) = old_tail.borrow_mut().prev.take() {
+                new_tail.borrow_mut().next = None;
+                self.tail = Some(new_tail);
+            } else {
+                self.head.take();
+            }
 
-                Rc::try_unwrap(old_tail)
-                    .ok()
-                    .expect("Something went wrong")
-                    .into_inner()
-                    .value
-                    .unwrap()
-            })
+            self.count -= 1;
+            old_tail.borrow().value.take().unwrap()
         })
     }
 
@@ -166,4 +182,86 @@ impl<T: std::fmt::Display> DoublyLinkedList<T> {
             .take()
             .ok_or("Node without a value".to_owned())
     }
+}
+
+fn main() {
+    let mut list = DoublyLinkedList::new();
+
+    list.append(1);
+    list.append(2);
+    list.append(3);
+    println!("Appended 3 elements.");
+
+    for node in list.iter() {
+        println!("{}", node.borrow().value.unwrap());
+    }
+
+    if let Some(value) = list.pop_last() {
+        println!("Popped last: {}", value);
+    } else {
+        println!("List was empty, nothing to pop.");
+    }
+
+    if let Some(value) = list.pop_last() {
+        println!("Popped last: {}", value);
+    } else {
+        println!("List was empty, nothing to pop.");
+    }
+
+    for node in list.iter() {
+        println!("{}", node.borrow().value.unwrap());
+    }
+
+    if let Some(value) = list.pop_last() {
+        println!("Popped last: {}", value);
+    } else {
+        println!("List was empty, nothing to pop.");
+    }
+
+    list.append(4);
+
+    for node in list.iter() {
+        println!("{}", node.borrow().value.unwrap());
+    }
+
+    if let Ok(_) = list.insert_to(0, 0) {
+        println!("Value inserted successfully!");
+    } else {
+        println!("Invalid index!");
+    }
+
+    if let Ok(_) = list.insert_to(2, 5) {
+        println!("Value inserted successfully!");
+    } else {
+        println!("Invalid index!");
+    }
+
+    list.append(12);
+    list.append(13);
+
+    for node in list.iter() {
+        println!("{}", node.borrow().value.unwrap());
+    }
+
+    if let Ok(value) = list.pop_at(1) {
+        println!("Popped at index 1: {}", value);
+    } else {
+        println!("Invalid index or list was empty.");
+    }
+
+    for node in list.iter() {
+        println!("{}", node.borrow().value.unwrap());
+    }
+
+    // let mut list2 = DoublyLinkedList::new();
+
+    // list2.append("hello");
+
+    let x = Box::new("hello");
+
+    println!("{}", x);
+
+    let y = &x;
+
+    println!("{}", *y);
 }

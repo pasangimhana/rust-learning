@@ -1,0 +1,42 @@
+Understanding EC2 Auto Scaling Groups: A Comparison with Traditional Setup
+
+Comparison between traditional and EC2 auto scaling setups
+- Traditional setup predefines number of EC2 instances regardless of traffic, leading to potential cost inefficiencies.
+- EC2 auto scaling allows flexibility in creating or reducing instances based on traffic or resource usage.
+
+Auto scaling group reduces costs by adjusting CPU based on demand
+- With auto scaling, you can adjust instance provisioning based on request volumes, reducing costs during low demand periods
+- Implementation involves creating VPC and attaching an internet gateway
+
+Creating route tables and associating with subnets for internet access
+- Create a route table named 'route table test public' within the VPC and associate with public subnets
+- Add a route with IP 0.0.0 to allow internet access by linking to the internet gateway
+
+Create an empty Target group in AWS console for future EC2 instances
+- Navigate to the AWS console and click on EC2 in the load balancing section to create the target group
+- Specify the name, protocol, VPC, and health checks for the target group and create it
+
+Setting up application load balancer and pointing it to target group.
+- Configuring ALB Security Group for HTTP request in the VPC.
+- Selecting subnets, security groups, and target group for the load balancer.
+
+Create autoscaling group with launch template
+- Launch template specifies EC2 instance configuration, including type, AMI, security groups.
+- Autoscaling group uses launch template to create EC2 instances based on Max and desired numbers.
+
+Configure EC2 autoscaling template
+- Select a subnet, enable auto assign public IP, include security groups for HTTP and SSH
+- Install Apache, update HTML content with host IP using user data script
+
+Launch template creation and configuration
+- Selecting the template version based on modifications
+- Configuring VPC, availability zone, load balancing, health checks
+
+Verifying EC2 instance and Load Balancer connectivity
+- Accessing the load balancer DNS to verify connection
+- Exploring server details and IP addresses of EC2 instances for verification
+
+Demonstrating EC2 autoscaling with instance provisioning
+- Terminating an instance triggers automatic provisioning of a new instance due to desired capacity setting in autoscaling group.
+- Instances move from healthy to pending during the process, showcasing autoscaling functionality.
+
